@@ -12,8 +12,9 @@ C++/JAVA语言基础：hashmap原理
 
 IOS相关/其他：MVC/MVVM、GET和POST、Socket通信原理、JSON数据传输、有web开发经验的优先
 
-
 ## 计网
+
+### HTTP、HTTPS
 
 1. [HTTP常见状态码](https://blog.csdn.net/laishaohe/article/details/79052085)
 
@@ -25,23 +26,128 @@ IOS相关/其他：MVC/MVVM、GET和POST、Socket通信原理、JSON数据传输
 
    500 – 内部服务器错误
 
-2. HTTP和HTTPS的区别，HTTPS加密过程（https是如何安全的，用到了什么加密算法，怎么获取私钥），中间URL怎么变，HTTP的长连接和短连接，HTTP头部有哪些内容
+2. HTTP和HTTPS的区别，HTTPS加密过程（https是如何安全的，用到了什么加密算法，怎么获取私钥），中间URL怎么变，HTTP的长连接和短连接，HTTP头部有哪些内容，http2.0和http1.0区别,如果没有http2.0，怎么解决短连接问题
 
-3. [DNS缓存](https://blog.csdn.net/yonggeit/article/details/88175022)
+**HTTP**
 
-4. DNS域名解析过程，接收到DNS查询结果之后还做了什么
+[超文本传输协议](https://baike.baidu.com/item/超文本传输协议/8535513)（HTTP，HyperText Transfer Protocol)是[互联网](https://baike.baidu.com/item/互联网)上应用最为广泛的一种[网络协议](https://baike.baidu.com/item/网络协议/328636)。设计 HTTP 最初的目的是为了提供一种发布和接收 HTML 页面的方法。它可以使浏览器更加高效。HTTP 协议是以明文方式发送信息的，如果黑客截取了 Web 浏览器和服务器之间的传输报文，就可以直接获得其中的信息。
 
-5. IP地址的分类清楚吗？子网是怎么划分的，什么是子网掩码？
+① 客户端的浏览器首先要通过网络与服务器建立连接，该连接是通过 TCP 来完成的，一般 TCP 连接的端口号是80。 建立连接后，客户机发送一个请求给服务器，请求方式的格式为：统一资源标识符（URL）、协议版本号，后边是 MIME 信息包括请求修饰符、客户机信息和许可内容。
 
-6. 代理服务器的工作原理是怎样的？代理和网关有什么区别？
+② 服务器接到请求后，给予相应的响应信息，其格式为一个状态行，包括信息的协议版本号、一个成功或错误的代码，后边是 MIME 信息包括服务器信息、实体信息和可能的内容。
 
-7. 了解cookie和session吗，二者有什么区别？
+**HTTPS**
 
-8. 什么是负载均衡，知道典型的负载均衡算法吗？
+是以安全为目标的 HTTP 通道，是 HTTP 的安全版。HTTPS 的安全基础是 **SSL**。SSL 协议位于 [TCP/IP 协议](https://baike.baidu.com/item/TCP/IP协议)与各种应用层协议之间，为[数据通讯](https://baike.baidu.com/item/数据通讯)提供安全支持。SSL 协议可分为两层：**SSL 记录协议（SSL Record Protocol）**，它建立在可靠的传输协议（如TCP）之上，为高层协议提供数据封装、压缩、加密等基本功能的支持。SSL 握手协议（SSL Handshake Protocol），它建立在 SSL 记录协议之上，用于在实际的数据传输开始前，通讯双方进行身份认证、协商加密算法、交换加密密钥等。
 
-9. 浏览器输入百度地址，中间具体访问过程是怎么样的，一次网页请求的完整过程，DNS的详细过程-->从本地HOST讲到根域名/顶级域名
+<img src="https://img-blog.csdnimg.cn/20200707084720409.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4Mjg5ODE1,size_16,color_FFFFFF,t_70" alt="img" style="zoom:50%;" />
 
-10. TCP四层模型，每层常见协议
+**HTTPS设计目标**
+
+1. **数据保密性**：保证数据内容在传输的过程中不会被第三方查看。就像快递员传递包裹一样，都进行了封装，别人无法获知里面装了什么 。
+
+2. **数据完整性**：及时发现被第三方篡改的传输内容。就像快递员虽然不知道包裹里装了什么东西，但他有可能中途掉包，数据完整性就是指如果被掉包，我们能轻松发现并拒收 。
+
+3. **身份校验安全性**：保证数据到达用户期望的目的地。就像我们邮寄包裹时，虽然是一个封装好的未掉包的包裹，但必须确定这个包裹不会送错地方，通过身份校验来确保送对了地方 。
+
+**HTTP 与 HTTPS的区别，HTTPS相对于HTTP的改进**
+
+1. HTTPS 协议需要到 **CA （Certificate Authority，证书颁发机构）申请证书**，一般免费证书较少，因而需要一定费用。(以前的网易官网是http，而网易邮箱是 https 。)
+
+2. HTTP 是超文本传输协议，信息是明文传输，HTTPS 则是具有安全性的 **SSL 加密传输协议**。
+
+3. HTTP 和 HTTPS 使用的是完全不同的连接方式，用的端口也不一样，前者是**80**，后者是**443**。
+
+4. HTTP 的连接很简单，是无状态的。HTTPS 协议是由 SSL+HTTP 协议构建的可进行加密传输、身份认证的网络协议，比 HTTP 协议安全。(无状态的意思是其数据包的发送、传输和接收都是相互独立的。无连接的意思是指通信双方都不长久的维持对方的任何信息。)
+
+**关于CA**
+
+- 采用 HTTPS 协议的服务器必须要有一套数字证书，可以自己制作，也可以向组织申请。区别就是自己颁发的证书需要客户端验证通过，才可以继续访问。**这套证书其实就是一对公钥和私钥。**
+
+- 互联网有太多的服务需要使用证书来验证身份，以至于客户端（操作系统或浏览器等）无法内置所有证书，需要通过服务端将证书发送给客户端。
+
+- **客户端内置的是 CA 的根证书(Root Certificate)，HTTPS 协议中服务器会发送证书链（Certificate Chain）给客户端。**
+
+**双向的身份认证**
+
+[客户端](https://baike.baidu.com/item/客户端/101081)和[服务端](https://baike.baidu.com/item/服务端/6492316)在传输数据之前，会通过基于[X.509](https://baike.baidu.com/item/X.509/2817050)证书对双方进行身份认证 。具体过程如下：
+
+- 客户端发起 SSL 握手消息给服务端要求连接。
+
+- 服务端将证书发送给客户端。
+
+- 客户端检查服务端证书，确认是否由自己信任的证书签发机构签发(客户端内置了所有受信任 CA 的证书)。 如果不是，将是否继续通讯的决定权交给用户选择 ( 注意，这里将是一个安全缺陷 )。如果检查无误或者用户选择继续，则客户端认可服务端的身份。
+
+- 服务端要求客户端发送证书，并检查是否通过验证。失败则关闭连接，认证成功则从客户端证书中获得客户端的[公钥](https://baike.baidu.com/item/公钥/6447788)，一般为 1024 位或者 2048 位。到此，服务器客户端双方的身份认证结束，双方确保身份都是真实可靠的。
+
+**数据传输的机密性**
+
+客户端和服务端在开始传输数据之前，会协商传输过程需要使用的加密算法。 客户端发送协商请求给服务端，其中包含自己支持的**非对成加密的密钥交换算法 ( 一般是[RSA](https://baike.baidu.com/item/RSA/210678))，数据签名摘要算法 ( 一般是[SHA](https://baike.baidu.com/item/SHA/9533316)或者[MD5](https://baike.baidu.com/item/MD5/212708)) ，加密传输数据的对称加密算法 ( 一般是[DES](https://baike.baidu.com/item/DES/210508))**，以及加密密钥的长度。 服务端接收到消息之后，选中安全性最高的算法，并将选中的算法发送给客户端，完成协商。**客户端生成随机的字符串，通过协商好的非对称加密算法，使用服务端的公钥对该字符串进行加密，发送给服务端。 服务端接收到之后，使用自己的私钥解密得到该字符串。在随后的数据传输当中，使用这个字符串作为密钥进行对称加密。**
+
+**防止重放攻击**
+
+SSL 使用序列号来保护通讯方免受报文重放攻击。这个序列号被加密后作为数据包的负载。在整个 SSL 握手中，都有一个唯一的随机数来标记 SSL 握手。 这样防止了攻击者嗅探整个登录过程，获取到加密的登录数据之后，不对数据进行解密，而直接重传登录数据包的攻击手法。
+
+可以看到，鉴于[电子商务](https://baike.baidu.com/item/电子商务/98106)等安全上的需求，HTTPS 对比 HTTP 协议，在安全方面已经取得了极大的增强。总结来说，HTTPS 的改进点在于创造性的使用了非对称加密算法，在不安全的网路上，安全的传输了用来进行非对称加密的密钥，综合利用了[非对称加密](https://baike.baidu.com/item/非对称加密/9874417)的安全性和[对称加密](https://baike.baidu.com/item/对称加密/2152944)的快速性。
+
+**客户端解析证书**
+
+这部分工作是由客户端的 TLS 来完成的，首先会验证公钥是否有效，比如颁发机构，过期时间等等，如果发现异常，则会弹出一个警告框，提示证书存在问题。如果证书没有问题，那么就生成一个对称加密密钥，然后用公钥对该密钥进行非对称加密。
+
+**传送加密信息**
+
+这部分传送的是用公钥加密后的对称加密密钥，目的就是让服务端得到这个密钥，以后客户端和服务端的通信就可以通过这个密钥来进行加密解密了。
+
+**服务端解密信息**
+
+服务端用非对称加密算法里的私钥解密后，得到了客户端传过来的对称加密算法的私钥，然后把之后传输的内容通过该值进行对称加密。
+
+**为什么用非对称加密协商对称加密密钥**
+
+对称加密的特点：对称密码体制中只有一种密钥，并且是非公开的。如果要解密就得让对方知道密钥，所以想要保证其安全性就要保证密钥的安全。
+
+非对称加密的特点：算法强度复杂、安全性依赖于算法与密钥但是由于其算法复杂，而使得加密解密速度没有对称加密解密的速度快。非对称密钥体制有两种密钥，其中一个是公开的，这样就可以不需要像对称密码那样传输对方的密钥了，这样安全性就大了很多。
+
+非对称加密公钥和私钥的使用方法：(1) 公钥加密私钥解密。(2) 私钥做数字签名，公钥验证。
+
+**HTTPS 的连接的详细过程**
+
+![img](https://img-blog.csdn.net/20180709141944471?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4Mjg5ODE1/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+
+① 客户端的[浏览器](https://baike.baidu.com/item/浏览器)向服务器发送请求，并传送客户端 SSL 协议的[版本号](https://baike.baidu.com/item/版本号)，加密算法的种类，产生的随机数，以及其他服务器和客户端之间通讯所需要的各种信息。
+
+② 服务器向客户端传送 SSL 协议的版本号，加密算法的种类，随机数以及其他相关信息，同时服务器还将向客户端传送自己的证书。
+
+③ 客户端利用服务器传过来的信息验证服务器的合法性，服务器的合法性包括：证书是否过期，发行[服务器证书](https://baike.baidu.com/item/服务器证书)的 CA 是否可靠，发行者证书的公钥能否正确解开服务器证书的 "发行者的数字签名"，服务器证书上的[域名](https://baike.baidu.com/item/域名)是否和服务器的实际域名相匹配。如果合法性验证没有通过，通讯将断开；如果合法性验证通过，将继续进行第四步。
+
+④ 用户端随机产生一个用于通讯的 "对称密码"，然后用服务器的公钥（服务器的公钥从步骤②中的服务器的证书中获得）对其加密，然后将加密后的“预主密码”传给服务器。
+
+⑤ 如果服务器要求客户的身份认证（在握手过程中为可选），用户可以建立一个随机数然后对其进行数据签名，将这个含有签名的随机数和客户自己的证书以及加密过的密钥一起传给服务器。
+
+⑥ 如果服务器要求客户的身份认证，服务器必须检验客户证书和签名随机数的合法性，具体的合法性验证过程包括：客户的证书使用日期是否有效，为客户提供证书的 CA 是否可靠，发行 CA 的公钥能否正确解开客户证书的发行 CA 的数字签名，检查客户的证书是否在证书废止列表（CRL）中。检验如果没有通过，通讯立刻中断；如果验证通过，服务器将用自己的私钥解开加密的私钥，然后执行一系列步骤来产生主[通讯密码](https://baike.baidu.com/item/通讯密码)（客户端也将通过同样的方法产生相同的主通讯密码）。
+
+⑦ 服务器和客户端用相同的对称加密密钥，[对称密钥](https://baike.baidu.com/item/对称密钥)用于 SSL 协议的安全[数据通讯](https://baike.baidu.com/item/数据通讯)的加解密[通讯](https://baike.baidu.com/item/通讯)。同时在 SSL 通讯过程中还要完成数据通讯的完整性，防止数据通讯中的任何变化。
+
+⑧ [客户端](https://baike.baidu.com/item/客户端)向[服务器](https://baike.baidu.com/item/服务器)端发出信息，指明后面的数据通讯将使用的步骤 ⑦ 中的主密码为[对称密钥](https://baike.baidu.com/item/对称密钥)，同时通知服务器客户端的握手过程结束。
+
+⑨ 服务器向客户端发出信息，指明后面的数据通讯将使用的步骤 ⑦ 中的主密码为对称密钥，同时通知客户端服务器端的握手过程结束。
+
+⑩ SSL 的握手部分结束，SSL 安全通道的数据通讯开始，客户和服务器开始使用相同的对称密钥进行数据通讯，同时进行通讯完整性的检验。
+
+### DNS
+
+1. [DNS缓存](https://blog.csdn.net/yonggeit/article/details/88175022)
+2. DNS域名解析过程，接收到DNS查询结果之后还做了什么
+3. IP地址的分类清楚吗？子网是怎么划分的，什么是子网掩码？
+4. 代理服务器的工作原理是怎样的？代理和网关有什么区别？
+5. 了解cookie和session吗，二者有什么区别？
+6. 浏览器输入百度地址，中间具体访问过程是怎么样的，一次网页请求的完整过程，DNS的详细过程-->从本地HOST讲到根域名/顶级域名
+
+
+
+### TCP/UDP
+
+1. TCP四层模型，每层常见协议
 
    <img src="https://cs-notes-1256109796.cos.ap-guangzhou.myqcloud.com/0fa6c237-a909-4e2a-a771-2c5485cd8ce0.png" width="450"/>
 
@@ -66,6 +172,8 @@ IOS相关/其他：MVC/MVVM、GET和POST、Socket通信原理、JSON数据传输
     checksum、ack、sequence number、定时器
 
 15. TCP三次握手，四次握手
+
+16. 什么是负载均衡，知道典型的负载均衡算法吗？
 
 
 ## OS
@@ -117,9 +225,9 @@ IOS相关/其他：MVC/MVVM、GET和POST、Socket通信原理、JSON数据传输
 
    减少程序在并发执行时所付出的时空开销，提高并发性
 
-4. 线程安全的方式有哪些，多线程是什么
+4. **线程安全的方式有哪些，多线程是什么**
 
-5. 锁，知道的锁和用法
+5. **锁，知道的锁和用法**，程序锁，乐观锁，悲观锁，单线程锁，共享锁，非共享锁还有什么锁
 
 6. 进程的几种状态以及什么条件下可以转换
 
@@ -142,7 +250,6 @@ IOS相关/其他：MVC/MVVM、GET和POST、Socket通信原理、JSON数据传输
 
 6. 虚拟内存，段页式，段页式的好处
 
-7. 程序锁，乐观锁，悲观锁，单线程锁，共享锁，非共享锁还有什么锁
 
 
 ## 数据结构
@@ -191,15 +298,41 @@ IOS相关/其他：MVC/MVVM、GET和POST、Socket通信原理、JSON数据传输
 10. python和C++的区别（待查）
 
 
-## IOS相关/其他
+## IOS
 
-1. 设计模式，单例模式（如何保证线程安全）
+1. MVC、MVVM，详细讲一下MVC？MVC数据流通的关系？为什么实际上可以做到V直接到M但一般实际情况中却不去使用呢？
 
-2. MVC、MVVM，详细讲一下MVC？MVC数据流通的关系？为什么实际上可以做到V直接到M但一般实际情况中却不去使用呢？
+   **Model（模型）**：处理数据逻辑的部分。通常Model对象负责在数据库中存取数据。
 
-3. UITableView了解多少，cell能不能重用
+   **View（视图）**：处理数据显示的部分。通常视图是依据模型数据创建的。
 
-4. [GET和POST是HTTP请求的两种基本方法，区别](https://blog.csdn.net/ever_siyan/article/details/87935455) 
+   **Controller（控制器）**：处理用户交互的部分。通常控制器负责从视图读取数据，控制用户输入，并向模型发送数据。
+
+   iOS中多数数据源视图控件（View）都有一个dataSource属性用于和控制器（Controller）交互，而数据来源一般会以数据模型（Model）的形式进行定义，View不直接和模型交互，而是通过Controller间接读取数据。
+
+   ![img](https://bkimg.cdn.bcebos.com/pic/ac6eddc451da81cb26660e7e5066d01608243184?x-bce-process=image/watermark,image_d2F0ZXIvYmFpa2U4MA==,g_7,xp_5,yp_5)
+
+2. UITableView了解多少，cell能不能重用
+
+   UITableView中每行数据都是一个UITableViewCell，UITableViewCell的内部有一个UIView控件（contentView，作为其他元素的父控件）、两个UILable控件（textLabel、detailTextLabel）、一个UIImage控件（imageView），分别用于容器、显示内容、详情和图片
+
+   UITableView对于数据源控件除了代理还有一个数据源属性，通过它和外界进行数据交互。 对于UITableView设置完dataSource后需要实现
+
+   ![img](http://www.cocoachina.com/cms/uploads/allimg/140922/4196_140922110101_1.png)
+
+   ![img](http://www.cocoachina.com/cms/uploads/allimg/140922/4196_140922110109_1.png)
+
+   支持**自定义UITableViewCell**，cell的复用，其中红色为可视区域，蓝色为屏幕外区域
+
+   <img src="https://upload-images.jianshu.io/upload_images/1322498-28c8d3a2b8b8f00f.png?imageMogr2/auto-orient/strip|imageView2/2/w/290/format/webp" alt="img" style="zoom: 75%;" /><img src="https://upload-images.jianshu.io/upload_images/1322498-e02c571c469a729d.png?imageMogr2/auto-orient/strip|imageView2/2/w/325/format/webp" alt="img" style="zoom:75%;" /><img src="https://upload-images.jianshu.io/upload_images/1322498-05fb712b0dfa16ba.png?imageMogr2/auto-orient/strip|imageView2/2/w/326/format/webp" alt="img" style="zoom:75%;" />
+
+   - 对于在 MVC 的定义中，view 层是不引用 model 层，view 和 model 是不相往来的
+   - 一般开发中，在自定义 view 中增加一个 model 的属性，外接直接传个 model 来，在 view 中 model 的 set 方法里对 view 的控件赋值的代码，例如在自定义 UITableViewCell 时用的很多，此时 view 是直接引用了 model
+   - **基于封装的思想，需要尽可能的复用代码，复用view，所以需要进行解耦，不依赖于某个特殊的 model。**另外，如果对于很特殊的 view，整个项目中没有什么重用的，可以按之前情况处理
+
+### 其他
+
+1. [GET和POST是HTTP请求的两种基本方法，区别](https://blog.csdn.net/ever_siyan/article/details/87935455) 
 
    GET把参数包含在URL中，POST通过request body传递参数
 
@@ -209,7 +342,9 @@ IOS相关/其他：MVC/MVVM、GET和POST、Socket通信原理、JSON数据传输
 
    POST方式的请求，浏览器先发送header，服务器响应100 continue，浏览器再发送data，服务器响应200 ok（返回数据）。
 
-5. 知道哪些加密算法
+2. 设计模式，单例模式（如何保证线程安全）
 
-6. 检验ca证书合法性是干啥的
+3. 知道哪些加密算法
+
+4. 检验ca证书合法性是干啥的
 
