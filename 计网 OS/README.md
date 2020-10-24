@@ -1,13 +1,15 @@
 # 计算机基础知识
 
-资料来自于[CyC2018](https://github.com/CyC2018)/**[CS-Notes](https://github.com/CyC2018/CS-Notes)**，现在只有计网和OS
+资料底稿自于[CyC2018](https://github.com/CyC2018)/**[CS-Notes](https://github.com/CyC2018/CS-Notes)**
 
 ### 目前的主要修改：
 
 1. 格式、排版
-2. 修改&补充了：
-   - 计网的码分复用
-   - 计网的RIP距离向量算法
+2. 计网：
+   - 码分复用，增加例子
+   - RIP距离向量算法，增加RIP更新路由表的详细过程
+   - 增加 DNS 整块内容，详细叙述了DNS解析过程
+   - 增加HTTP、HTTPS整块内容
 
 
 
