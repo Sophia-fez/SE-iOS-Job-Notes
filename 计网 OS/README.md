@@ -1,6 +1,6 @@
 # 计算机基础知识
 
-资料底稿自于[CyC2018](https://github.com/CyC2018)/**[CS-Notes](https://github.com/CyC2018/CS-Notes)**
+OS.md、计网.md 资料底稿自于[CyC2018](https://github.com/CyC2018)/**[CS-Notes](https://github.com/CyC2018/CS-Notes)**，牛客IOS面经整理.md 是综合各方的整理
 
 ### 目前的主要修改：
 
