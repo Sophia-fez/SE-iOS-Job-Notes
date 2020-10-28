@@ -366,7 +366,6 @@ HTTP：TCP建立完成后用HTTP协议访问网页
 - GET产生一个TCP数据包；POST产生两个TCP数据包。
 - GET方式的请求，浏览器会把http header和data一并发送出去，服务器响应200（返回数据）；
 - POST方式的请求，浏览器先发送header，服务器响应100 continue，浏览器再发送data，服务器响应200 ok（返回数据）。
-- 
 
 1. **DHCP 配置主机信息**
 
@@ -612,15 +611,15 @@ HTTP：TCP建立完成后用HTTP协议访问网页
 
 一个虚拟地址分成两个部分，一部分存储**页号**，一部分**页内偏移量**
 
-<img src="D:\github\SE-IOS-Notes\计网 OS\image\QQ截图20201026165120.png" alt="QQ截图20201026165120" style="zoom: 75%;" />
+<img src="D:\github\SE-IOS-Notes\image\QQ截图20201026165120.png" alt="QQ截图20201026165120" style="zoom:75%;" />
 
 页表：系统为每个进程建立一张页表，页表由页表项组成，每一个页表项分为**页号**和**物理内存中的块号**两部分，物理内存中的块号与页内偏移量共同组成物理地址
 
-<img src="D:\github\SE-IOS-Notes\计网 OS\image\QQ截图20201026165402.png" alt="QQ截图20201026165402" style="zoom:75%;" />
+<img src="D:\github\SE-IOS-Notes\image\QQ截图20201026165402.png" alt="QQ截图20201026165402" style="zoom:75%;" />
 
-<img src="D:\github\SE-IOS-Notes\计网 OS\image\QQ截图20201026165425.png" alt="QQ截图20201026165425" style="zoom:75%;" />
+<img src="D:\github\SE-IOS-Notes\image\QQ截图20201026165425.png" alt="QQ截图20201026165425" style="zoom:75%;" />
 
-<img src="D:\github\SE-IOS-Notes\计网 OS\image\QQ截图20201026165459.png" alt="QQ截图20201026165459" style="zoom:75%;" />
+<img src="D:\github\SE-IOS-Notes\image\QQ截图20201026165459.png" alt="QQ截图20201026165459" style="zoom:75%;" />
 
 分页管理系统中地址空间是一维的，页表不能太大，否则内存利用率会降低
 
@@ -628,23 +627,23 @@ HTTP：TCP建立完成后用HTTP协议访问网页
 
 分段的做法是把每个表分成段，一个段构成一个独立的地址空间。**每个段的长度可以不同，并且可以动态增长。**段内地址空间要求连续，段间不要求连续。
 
-<img src="D:\github\SE-IOS-Notes\计网 OS\image\QQ截图20201026165530.png" alt="QQ截图20201026165530" style="zoom:75%;" />
+<img src="D:\github\SE-IOS-Notes\image\QQ截图20201026165530.png" alt="QQ截图20201026165530" style="zoom:75%;" />
 
-<img src="D:\github\SE-IOS-Notes\计网 OS\image\QQ截图20201026165737.png" alt="QQ截图20201026165737" style="zoom:75%;" />
+<img src="D:\github\SE-IOS-Notes\image\QQ截图20201026165737.png" alt="QQ截图20201026165737" style="zoom:75%;" />
 
-<img src="D:\github\SE-IOS-Notes\计网 OS\image\QQ截图20201026165741.png" alt="QQ截图20201026165741" style="zoom:75%;" />
+<img src="D:\github\SE-IOS-Notes\image\QQ截图20201026165741.png" alt="QQ截图20201026165741" style="zoom:75%;" />
 
-<img src="D:\github\SE-IOS-Notes\计网 OS\image\QQ截图20201026165639.png" alt="QQ截图20201026165639" style="zoom:75%;" />
+<img src="D:\github\SE-IOS-Notes\image\QQ截图20201026165639.png" alt="QQ截图20201026165639" style="zoom:75%;" />
 
 ###  段页式
 
 **程序的地址空间划分成多个拥有独立地址空间的段，每个段上的地址空间划分成大小相同的页。**这样既拥有分段系统的共享和保护，又拥有分页系统的虚拟内存功能。系统为每个进程建立一张段表，每个分段都有一张页表。在一个进程中，段表只有一个，但页表可能有多个。
 
-<img src="D:\github\SE-IOS-Notes\计网 OS\image\QQ截图20201026165827.png" alt="QQ截图20201026165827" style="zoom:75%;" />
+<img src="D:\github\SE-IOS-Notes\image\QQ截图20201026165827.png" alt="QQ截图20201026165827" style="zoom:75%;" />
 
-<img src="D:\github\SE-IOS-Notes\计网 OS\image\QQ截图20201026165822.png" alt="QQ截图20201026165822" style="zoom:75%;" />
+<img src="D:\github\SE-IOS-Notes\image\QQ截图20201026165822.png" alt="QQ截图20201026165822" style="zoom:75%;" />
 
-<img src="D:\github\SE-IOS-Notes\计网 OS\image\QQ截图20201026165923.png" alt="QQ截图20201026165923" style="zoom:75%;" />
+<img src="D:\github\SE-IOS-Notes\image\QQ截图20201026165923.png" alt="QQ截图20201026165923" style="zoom:75%;" />
 
 ### 分页与分段的比较
 
@@ -721,19 +720,169 @@ HTTP：TCP建立完成后用HTTP协议访问网页
 
    <div align="center"> <img src="https://cs-notes-1256109796.cos.ap-guangzhou.myqcloud.com/5f5ef0b6-98ea-497c-a007-f6c55288eab1.png"/> </div><br>
 
-### 
-
 ## 数据结构
 
-1. B树B+树，红黑树
-2. 排序算法
-3. 数组与链表的区别
+### 红黑树
+
+1. 特点：
+
+- 每个节点非红即黑
+- 根结点总是黑的
+- 叶子节点总是黑的空节点（nil节点）
+- 如果节点是红色，它的子节点必须是黑色，反之不一定
+- 从根结点到叶结点或空节点的每条路径，必须包含相同数目的黑色节点
+
+2. 应用：TreeMap、TreeSet、HashMap底层
+
+### B树B+树
+
+B树也就是B-树
+
+1. B树特点
+   - B-tree是一种多路搜索树（并不是二叉的），对于一棵M阶树：
+   - 定义任意非叶子结点最多只有M个孩子；且M>2；
+   - 根结点的孩子数为[2, M]，除非根结点为叶子节点；
+   - 除根结点以外的非叶子结点的儿子数为[M/2, M]；
+   - 非叶子结点的关键字个数=指向儿子的指针个数-1；
+   - 每个非叶子结点存放至少M/2-1（取上整）和至多M-1个关键字；
+   - 非叶子结点的关键字：K[1], K[2], …, K[M-1]；且K[i] < K[i+1]；
+   - 非叶子结点的指针：P[1], P[2], …, P[M]；其中P[1]指向关键字小于K[1]的子树，P[M]指向关键字大于K[M-1]的子树，其它P[i]指向关键字属于(K[i-1], K[i])的子树；
+   - 所有叶子结点位于同一层；
+
+<img src="D:\github\SE-IOS-Notes\image\QQ截图20201027001506.png" alt="QQ截图20201027001506" style="zoom:75%;" />
+
+2. B+树
+
+   B+-tree是应文件系统所需而产生的一种B-tree的变形树。
+
+   B树和B+树的对比，一棵m阶的B+树和m阶的B树的异同点在于：
+
+   - 有n棵子树的结点中含有n-1 个关键字；
+   - 所有的叶子结点中包含了全部关键字的信息，及指向含有这些关键字记录的指针，且叶子结点本身依关键字的大小自小而大的顺序链接。 (而B 树的叶子节点并没有包括全部需要查找的信息)
+   - 所有的非终端结点可以看成是索引部分，结点中仅含有其子树根结点中最大（或最小）关键字。 (而B 树的非终节点也包含需要查找的有效信息)
+
+### 排序算法
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20181125190554882.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1h1bkNpeQ==,size_16,color_FFFFFF,t_70)
+
+#### 1. 插入排序
+#### ①直接插入排序
+【空间】O(1)
+【时间】排序过程中，向有序子表中逐个地插入元素的操作进行了n-1趟 
+ 最好O(n)，元素已有序，每插入一个元素都只需比较一次而不用移动元素
+ 最坏O(n2)，初始为逆序，总比较次数达到最大∑i=2n i，总的移动次数达到最大∑i=2n （i+1）
+ 平均O(n2)，初始顺序随机，总的比较次数和移动次数均约为n2/4
+【比较次数与初始状态】√
+【移动次数与初始状态】√
+【一趟排序一个关键字到达最终位置】×，如1,2,3,4,5,0在最后一趟排序前没有任何一个关键字到达最终位置
+【稳定性】√ 每次插入元素总是从后向前比较再移动，不会出现相同元素相对位置变化
+【适用性】基本有序，数据量不大；顺序存储、链式存储（大部分排序只适用于顺序存储） 
+
+##### ②折半排序
+【空间】O(1)
+【时间】相比于直接插入排序，查找插入位置上花的时间大大减少
+ 最好O(nlog2n)，
+ 最坏O(n2)，
+ 平均O(n2)，
+【比较次数与初始状态】×，仅取决于表中元素个数n（二叉排序树高）
+【移动次数与初始状态】√
+【一趟排序一个关键字到达最终位置】×
+【稳定性】√
+【适用性】关键字较多时
+
+##### ③希尔排序（缩小增量排序）
+将待排序表按选区的“增量”分割成若干个特殊的子表，进行直接插入排序，希尔排序每趟都会使整个序列变得更加基本有序，最后再来一趟直接插入排序效率更高
+增量选取
+①希尔：⌊n/2⌋，⌊n/4⌋……⌊n/2k⌋……2,1
+②帕佩尔诺夫和斯塔舍维奇：2k+1，……65,33，17,9,5,3,1，其中k为大于1的整数，2k+1<n,增量序列末尾的1是额外添加的，此时时间复杂度为O（n1.5）
+注：①增量序列最后一定是1	②增量序列中的值应尽量没有除1以外的公因子（素数）
+【空间】O(1)
+【时间】依赖于增量系列
+ 最坏O(n2)
+ 平均O(nlog2n)
+ n在特定范围内，O（n1.3）
+【比较次数与初始状态】
+【移动次数与初始状态】
+【一趟排序一个关键字到达最终位置】
+【稳定性】×，相同关键字可能被划分到不同的子表可能会改变他们的相对次序
+【适用性】仅适用于顺序存储
+
+#### 2. 交换排序
+##### ①冒泡排序
+在一趟排序过程中没有发生关键字交换则冒泡排序结束
+【空间】O(1)
+【时间】
+ 最好O(n)，初始有序，比较n-1次，移动0次
+ 最坏O(n2)，初始逆序，需要n-1趟排序，第i趟比较n-i次，每次需要移动元素3次交换元素位置，共比较次数∑i=1n-1 (n-i）=n(n-1)/2，移动次数∑i=1n-1  3(n-i）=3n(n-1)/2
+ 平均O(n2)
+【比较次数与初始状态】√
+【移动次数与初始状态】√
+【一趟排序一个关键字到达最终位置】√
+【稳定性】√
+【适用性】
+
+##### ②快速排序
+划分思想，一趟后划分为左右两部分
+【空间】递归需要栈，最好⌈log2(n+1) ⌉次即O(log2n)，最坏n-1次即O(n)
+【时间】与划分是否对称有关，后者又与具体划分算法有关
+ 最好O(nlog2n)，平衡划分
+ 最坏O(n2)，初始序列基本有序或逆序，两个区域分别有n-1和0个元素，最大程度上的不对称发生在每一层递归上
+ 平均O(nlog2n)，是同级别里最好的
+【比较次数与初始状态】√
+【移动次数与初始状态】√
+【一趟排序一个关键字到达最终位置】√
+【稳定性】×
+【适用性】初始序列越无序越高效，可根据第i趟是否有i个元素在最终位置，再比较其是否将序列划分为为左右两部分判断是否是快排
+
+#### 3. 选择排序
+##### ①简单选择排序
+【空间】O(1)
+【时间】移动次数很少，不会超过3(n-1)，有序时最好0次；比较次数与初始序列无关，始终是n(n-1)/2次，时间复杂度始终为O(n2)
+【比较次数与初始状态】× O(n2)
+【移动次数与初始状态】√ O(nn2)
+【一趟排序一个关键字到达最终位置】√
+【稳定性】× 第i趟找到最小元素后和第i个元素交换，可能导致相对位置发生变化，顺序表交换会导致不稳定，链表插入版不会导致不稳定，若无特别说明则是顺序表
+【适用性】
+
+##### ②堆排序
+小根堆满足L(i)<=L(2i) && L(i)<=L(2i+1)，大根堆满足L(i)>=L(2i) && L(i)>=L(2i+1)
+建立大根堆，输出堆顶（或者放到最后加入有序序列），将堆底元素送入堆顶，重新调整，重复以上过程直到堆中只剩一个元素
+插入结点，按照完全二叉树插入在最底层最右边然后调整；删除结点，与最底层最右边结点交换再删除叶结点
+筛选（调整），从无序序列所确定的完全二叉树第一个非叶结点，从右至左，从上至下依次调整。将结点p与其孩子值比较，若孩子大，与最大的孩子交换，p来到下一层重复以上操作直到孩子值都小于p
+【空间】O(1)
+【时间】O(nlog2n)，建堆O(n)， 只有n-1次向下调整，每次调整时间复杂度与树高有关为O(log2n)（也是插入一个、删除一个元素的复杂度）
+【比较次数与初始状态】
+【移动次数与初始状态】
+【一趟排序一个关键字到达最终位置】√
+【稳定性】× 进行筛选时有可能把后面相同关键字元素调整到前面
+【适用性】在所有时间复杂度O(nlog2n)中空间复杂度最小，适合关键字较多的情况，如10000个关键字中选出10个最小
+【题】小根堆，最大关键字一定存储在对应完全二叉树的叶子结点中，最后一个非叶子结点存储在⌊n/2⌋，所以最大关键字在⌊n/2⌋ +1~n之间
+
+#### 4. 二路归并排序
+K路归并n个元素，趟数m= ⌈logkn  ⌉
+【空间】O(n)
+【时间】O(nlog2n)，每一趟O(n)，共⌈log2n ⌉趟
+【比较次数与初始状态】
+【移动次数与初始状态】
+【一趟排序一个关键字到达最终位置】×
+【稳定性】√
+【适用性】
+
+#### 5.基数排序
+借助“分配”和“收集”对单逻辑关键字操作，n个关键字，d为关键字位数，r为关键字基的个数，如930等三位数排序，d=3（3位），r=10（0~9）
+【空间】O(r)
+【时间】一趟分配O(n)，一趟收集O(r)，一共需要d趟分配和收集，时间复杂度O(d(n+r))，与初始状态无关
+【比较次数与初始状态】
+【移动次数与初始状态】
+【一趟排序一个关键字到达最终位置】×
+【稳定性】√
+【适用性】关键字很多，但构成关键字的元素取值范围很小（r很小）。如果关键字取值范围也很大，如26个字母并且序列中大多数关键字关键字都不同，可以考虑使用“最高为优先”，根据最高位排成若干子序列，再对子序列进行直接插入排序
 
 ## C++/JAVA语言基础
 
 1. 面向对象（封装，继承和多态）
 
-2. hashmap的底层实现
+2. hashmap的底层实现（红黑树）
 
 3. [java实现线程同步的七种方法](https://www.cnblogs.com/cxxjohnson/p/8536257.html)
 
@@ -771,38 +920,186 @@ HTTP：TCP建立完成后用HTTP协议访问网页
 
 ## IOS
 
-1. MVC、MVVM，详细讲一下MVC？MVC数据流通的关系？为什么实际上可以做到V直接到M但一般实际情况中却不去使用呢？
+### MVC
 
-   **Model（模型）**：处理数据逻辑的部分。通常Model对象负责在数据库中存取数据。
+MVC一句话描述就是Controller负责将Model的数据用View显示出来，换句话说就是在Controller里面把Model的数据赋值给View
 
-   **View（视图）**：处理数据显示的部分。通常视图是依据模型数据创建的。
+**Model（模型）**：处理数据逻辑的部分。通常Model对象负责在数据库中存取数据。
 
-   **Controller（控制器）**：处理用户交互的部分。通常控制器负责从视图读取数据，控制用户输入，并向模型发送数据。
+**View（视图）**：处理数据显示的部分。通常视图是依据模型数据创建的。
 
-   iOS中多数数据源视图控件（View）都有一个dataSource属性用于和控制器（Controller）交互，而数据来源一般会以数据模型（Model）的形式进行定义，View不直接和模型交互，而是通过Controller间接读取数据。
+**Controller（控制器）**：处理用户交互的部分。通常控制器负责从视图读取数据，控制用户输入，并向模型发送数据。
 
-   ![img](https://bkimg.cdn.bcebos.com/pic/ac6eddc451da81cb26660e7e5066d01608243184?x-bce-process=image/watermark,image_d2F0ZXIvYmFpa2U4MA==,g_7,xp_5,yp_5)
+iOS中多数数据源视图控件（View）都有一个dataSource属性用于和控制器（Controller）交互，而数据来源一般会以数据模型（Model）的形式进行定义，View不直接和模型交互，而是通过Controller间接读取数据。
 
-2. UITableView了解多少，cell能不能重用
+delegate 代理模式（设计模式的一种），用来处理事件监听、参数传递功能。
 
-   UITableView中每行数据都是一个UITableViewCell，UITableViewCell的内部有一个UIView控件（contentView，作为其他元素的父控件）、两个UILable控件（textLabel、detailTextLabel）、一个UIImage控件（imageView），分别用于容器、显示内容、详情和图片
+![img](https://bkimg.cdn.bcebos.com/pic/ac6eddc451da81cb26660e7e5066d01608243184?x-bce-process=image/watermark,image_d2F0ZXIvYmFpa2U4MA==,g_7,xp_5,yp_5)
 
-   UITableView对于数据源控件除了代理还有一个数据源属性，通过它和外界进行数据交互。 对于UITableView设置完dataSource后需要实现
+<img src="https://upload-images.jianshu.io/upload_images/7770244-f4fc955f1488299a.png?imageMogr2/auto-orient/strip|imageView2/2/w/1127/format/webp" alt="img" style="zoom:50%;" />
 
-   ![img](http://www.cocoachina.com/cms/uploads/allimg/140922/4196_140922110101_1.png)
+### MVVM
 
-   ![img](http://www.cocoachina.com/cms/uploads/allimg/140922/4196_140922110109_1.png)
+MVVM把View和Contrller都放在了View层（相当于把Controller一部分逻辑抽离了出来），Model层依然是服务端返回的数据模型。而**ViewModel充当了一个UI适配器的角色**，也就是说View中每个UI元素都应该在ViewModel找到与之对应的属性。除此之外，从**Controller抽离出来的与UI有关的逻辑都放在了ViewModel中**，这样就减轻了Controller的负担。
 
-   支持**自定义UITableViewCell**，cell的复用，其中红色为可视区域，蓝色为屏幕外区域
+MVC和MVVM的区别并不是VM完全取代了C，只是在MVC的基础上增加了一层VM，只不过是弱化了C的概念，ViewModel存在目的在于抽离Controller中展示的业务逻辑，而不是替代Controller，其它视图操作业务等还是应该放在Controller中实现。
 
-   <img src="https://upload-images.jianshu.io/upload_images/1322498-28c8d3a2b8b8f00f.png?imageMogr2/auto-orient/strip|imageView2/2/w/290/format/webp" alt="img" style="zoom: 75%;" /><img src="https://upload-images.jianshu.io/upload_images/1322498-e02c571c469a729d.png?imageMogr2/auto-orient/strip|imageView2/2/w/325/format/webp" alt="img" style="zoom:75%;" /><img src="https://upload-images.jianshu.io/upload_images/1322498-05fb712b0dfa16ba.png?imageMogr2/auto-orient/strip|imageView2/2/w/326/format/webp" alt="img" style="zoom:75%;" />
+### UITableView、UITableViewCell
 
-   - 对于在 MVC 的定义中，view 层是不引用 model 层，view 和 model 是不相往来的
-   - 一般开发中，在自定义 view 中增加一个 model 的属性，外接直接传个 model 来，在 view 中 model 的 set 方法里对 view 的控件赋值的代码，例如在自定义 UITableViewCell 时用的很多，此时 view 是直接引用了 model
-   - **基于封装的思想，需要尽可能的复用代码，复用view，所以需要进行解耦，不依赖于某个特殊的 model。**另外，如果对于很特殊的 view，整个项目中没有什么重用的，可以按之前情况处理
+UITableView中每行数据都是一个UITableViewCell，UITableViewCell的内部有一个UIView控件（contentView，作为其他元素的父控件）、两个UILable控件（textLabel、detailTextLabel）、一个UIImage控件（imageView），分别用于容器、显示内容、详情和图片
 
-### 其他
+UITableView对于数据源控件除了代理还有一个数据源属性，通过它和外界进行数据交互。 对于UITableView设置完dataSource后需要实现
 
-2. 设计模式，单例模式（如何保证线程安全）
+![img](http://www.cocoachina.com/cms/uploads/allimg/140922/4196_140922110101_1.png)
+
+![img](http://www.cocoachina.com/cms/uploads/allimg/140922/4196_140922110109_1.png)
+
+支持**自定义UITableViewCell**，cell的复用，其中红色为可视区域，蓝色为屏幕外区域
+
+<img src="https://upload-images.jianshu.io/upload_images/1322498-28c8d3a2b8b8f00f.png?imageMogr2/auto-orient/strip|imageView2/2/w/290/format/webp" alt="img" style="zoom: 75%;" /><img src="https://upload-images.jianshu.io/upload_images/1322498-e02c571c469a729d.png?imageMogr2/auto-orient/strip|imageView2/2/w/325/format/webp" alt="img" style="zoom:75%;" /><img src="https://upload-images.jianshu.io/upload_images/1322498-05fb712b0dfa16ba.png?imageMogr2/auto-orient/strip|imageView2/2/w/326/format/webp" alt="img" style="zoom:75%;" />
+
+- 对于在 MVC 的定义中，view 层是不引用 model 层，view 和 model 是不相往来的
+- 一般开发中，在自定义 view 中增加一个 model 的属性，外接直接传个 model 来，在 view 中 model 的 set 方法里对 view 的控件赋值的代码，例如在自定义 UITableViewCell 时用的很多，此时 view 是直接引用了 model
+- **基于封装的思想，需要尽可能的复用代码，复用view，所以需要进行解耦，不依赖于某个特殊的 model。**另外，如果对于很特殊的 view，整个项目中没有什么重用的，可以按之前情况处理
+
+### 自定义UIButton，UIEdgeInsets属性
+
+`UIButton`的另一个重要的属性就是`UIEdgeInsets`，称之为偏移量，分别有`contentEdgeInsets`、`imageEdgeInsets`、`titleEdgeInsets`三个相关属性。
+ 默认情况下：
+
+- `contentEdgeInsets`的`top`、`left`、`bottom`、`right`都是相对于`button`本身，控制着`image`和`title`整体的偏移量；
+- `imageEdgeInsets`的`top`、`left`、`bottom`相对于`button`，`right`相对于`title`，控制着`image`的相对偏移量；
+- `titleEdgeInsets`的`top`、`bottom`、`right`相对于`button`，`left`相对于`image`，控制着`title`的相对偏移量；
+
+### 堆和栈
+
+[多线程中栈与堆是公有的还是私有的](https://www.jianshu.com/p/224a308a6347)
+
+在多线程环境下，每个线程拥有一个栈和一个程序计数器。栈和程序计数器用来保存线程的执行历史和线程的执行状态，是线程私有的资源。其他的资源（比如堆、地址空间、全局变量）是由同一个进程内的多个线程共享。
+
+[地址从低到高：代码区、常量区、全局区（数据段）、堆空间、栈空间、动态库](https://blog.csdn.net/hairetz/article/details/4141043)
+
+- 代码区：存放函数体的二进制代码
+- 常量区：常量字符串就是放在这里的。程序结束后由系统释放 
+- 全局区（静态区）：全局变量和静态变量的存储是放在一块的，初始化的全局变量和静态变量在一块区域，   未初始化的全局变量和未初始化的静态变量在相邻的另一块区域。 程序结束后由系统释放。 
+
+- 堆空间：一般由程序员分配释放，若程序员不释放，程序结束时可能由OS回收。与数据结构中的堆是两回事，分配方式倒是类似于链表
+
+- 栈空间：由操作系统自动分配释放，存放函数的参数值，局部变量的值，其操作方式类似于数据结构中的栈。
+
+**堆和栈的区别：**
+
+**一、堆栈空间分配区别：**
+
+1、栈（操作系统）：由操作系统自动分配释放 ，存放函数的参数值，局部变量的值等。其操作方式类似于数据结构中的栈；
+
+2、堆（操作系统）： 一般由程序员分配释放， 若程序员不释放，程序结束时可能由OS回收，分配方式倒是类似于链表。
+
+**二、堆栈缓存方式区别：**
+
+1、栈使用的是一级缓存， 他们通常都是被调用时处于存储空间中，调用完毕立即释放；
+
+2、堆是存放在二级缓存，生命周期由虚拟机的垃圾回收算法来决定（并不是一旦成为孤儿对象就能被回收）。所以调用这些对象的速度要相对来得低一些。
+
+堆：内存中，存储的是引用数据类型，引用数据类型无法确定大小，堆实际上是一个在内存中使用到内存中零散空间的链表结构的存储空间，堆的大小由引用类型的大小直接决定，引用类型的大小的变化直接影响到堆的变化
+
+栈：是内存中存储值类型的，大小为2M，超出则会报错，内存溢出
+
+**三、堆栈数据结构区别：**
+
+堆（数据结构）：堆可以被看成是一棵树，如：堆排序；
+
+栈（数据结构）：一种先进后出的数据结构。
+
+### [循环引用](https://www.jianshu.com/p/e3302eac8536)
+
+iOS内存中的分区有：堆、栈、静态区。其中，栈和静态区是操作系统自己管理回收，不会造成循环引用。在堆中的相互引用无法回收，有可能造成循环引用。
+
+循环引用的实质：多个对象相互之间有强引用，不能施放让系统回收。
+
+解决循环引用一般是将 strong 引用改为 weak 引用。
+
+1. **父类与子类**
+
+如：在使用UITableView 的时候，将 UITableView 给 Cell 使用，cell 中的 strong 引用会造成循环引用。
+
+解决：strong 改为 weak
+
+2. **block**
+
+block在copy时都会对block内部用到的对象进行强引用的。self将block作为自己的属性变量，而在block的方法体里面又引用了 self 本身，此时就很简单的形成了一个循环引用。
+
+在 ARC 中，在被拷贝的 block 中无论是直接引用 self 还是通过引用 self 的成员变量间接引用 self，该 block 都会 retain self。
+
+3. **Delegate**
+
+delegate 属性的声明如下：@property (nonatomic, weak) id <TestDelegate> delegate;
+如果将 weak 改为 strong，则会造成循环引用
+
+4. **NSTimer**
+
+NSTimer 的 target 对传入的参数都是强引用（即使是 weak 对象）
+
+计时器保留其目标对象，反复执行任务导致的循环，确实要注意，另外在dealloc的时候，不要忘了调用计时器中的 invalidate方法。
+
+<img src="https://upload-images.jianshu.io/upload_images/6618656-d08f3092a97ab9e3?imageMogr2/auto-orient/strip|imageView2/2/w/1110/format/webp" alt="img" style="zoom:50%;" />
 
 
+### 常见汇编指令
+
+![clipboard](D:\github\SE-IOS-Notes\image\clipboard.png)
+
+### 设计模式
+
+![img](https://upload-images.jianshu.io/upload_images/301129-2c27c621a8eb8d05.png?imageMogr2/auto-orient/strip|imageView2/2/w/912/format/webp)
+
+## [智力题](https://blog.csdn.net/qq_40058686/article/details/104664136)
+
+1. **100层楼，给你两个鸡蛋，怎么确定在哪一层是摔坏的，而在那一层之下不会碎？**
+
+- **第 1 次在第 x 层尝试**，如果碎了，就从1遍历到 x-1 ；如果没碎，那么**第 2 次在第 x +（x-1）层尝试**。因为假设通过 x 步得到答案，在第 x 层尝试了一次，还剩下 x-1 次尝试机会，所以选择第 x +（x-1）层尝试，第 x 层到 第 x +（x-1）层之间刚好可以尝试 x - 2次，这样一共最多尝试x次。
+- **第 2 次在第  x +（x-1）层尝试**，如果碎了，遍历 x+1 到 x +（x-1）-1的所有楼层；如果没碎，尝试在第 x +（x-1）+（x-2）层摔
+- ……
+
+- 一直操作，直到碎掉，所以楼层公式为x(x+1)/2
+
+ 
+
+2. 岛上有群人，各自戴着**红帽子或者白帽子**，但都不知道自己帽子颜色，只有知道自己帽子颜色，第二天才能出岛，这时候有个人进来说了句”**你们之中至少有一个人戴了顶红帽子**”，问岛上的人最后的离开情况
+
+   **如果有 n 个红帽子，那么第 n+1 天后红帽子的都能走掉，n+2 天后白帽子的都能走掉**
+
+   - 假如只有一个红帽子，那么戴红帽子的第二天就会走。一个人他看到其他所有人带的都是白帽子，所以知道了自己是红帽子，所以红帽子第二天走了，剩下的白帽子第三天走了。
+   - 假如是两个红帽子，这两个红帽子都不能确定自己的颜色，所以第二天都不会走，但是假如这两个人都发现第二天对方没走，那么就能知道自己戴的是红帽子，所以第三天两个红帽子都走了，第四天白帽子全走，以此类推。
+
+ 
+
+3. 总共100个球，两个人分别拿，至少拿1个最多拿5个，你先拿怎么保证总能拿到第100个？
+
+   假如最后我拿了之后剩余的是1到5个，那么最后一个肯定是对方拿到了，而我假如最后拿了剩6个，那么无论对方怎么拿我都能保证第100个是我拿的，接着想假如我拿了之后剩12个，那么无论对方怎么拿我都能够将个数减到6个，所以只要我先拿然后每次保证剩余个数是6的倍数就行了
+
+ 
+
+4. 小明一家五口人喜欢探险，一天黑夜，他们被困在一座悬崖之上，好在他们发现了一座独木桥，但是他们唯一能照明的手电只能亮二十九秒了。小明过桥需要 3 秒钟，小明的爸爸只要1 秒钟，妈妈需要 6 秒钟，爷爷需要 8 秒钟，而奶奶则需要 12 秒钟，他们必须在这二十九秒内全部过河，但独木桥最多一次能承重 2 个人，同时必须保证在独木桥上的人有手电照明，应该如何安排过桥顺序呢？
+   - 爸爸拿手电和小明过去，3s
+   - 爸爸拿手电筒回来：1s
+   - 手电筒给爷爷奶奶，12s
+   - 手电筒给小明，小明回来：3s
+   - 手电筒给爸爸妈妈：6s
+   - 爸爸回来：1s
+   - 爸爸和小明过去：3s
+   - 总共29s
+
+ 
+
+5. 一个ip和海量ip黑名单，怎么判断ip是否在黑名单中？
+
+   使用布隆过滤器。它有一个位数组和k个哈希函数，我们先使用k个哈希函数对这个ip进行k次计算，就能够得到k个哈希值了，然后根据得到的哈希值去判断位数组中对应下标的值是否为1，如果都为1，那么就在布隆过滤器中，只要有一个不为1，那么就不在。但是布隆过滤器可能存在误判（也就是说如果某个元素存在，那么可能是误判，但是某个元素不在，那么就一定不在）。这个时候可以通过设置白名单来结果误判的问题
+
+   不适用位图的原因是因为位图法所占空间随着集合内最大元素的增大而增大，假如查找的元素数量少但是值特别大，那么就会特别浪费空间
+
+ 
+
+6. 海量数据找中位数？
+
+   首先对海量数据进行分份，然后遍历每一份中的所有数据，每个数据用位运算去除最高的8位，然后根据最高的8位的值确定放入哪个桶里，再把每个桶写入一个磁盘文件中，并且统计每个桶内数据的数量，计算中位数是在哪个桶中，再把该桶中的数据读到内存中，以内存中整数的次高8bit又进行一次桶排序，和第一步相同的操作，一直这样知道字节是（0-7bit），这个时候再在内存中进行一次快排就行了
