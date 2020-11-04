@@ -58,7 +58,8 @@ class Solution {
         while(!deque.isEmpty()) {
             // 打印奇数层
             List<Integer> tmp = new ArrayList<>();
-            for(int i = deque.size(); i > 0; i--) {
+            int size = deque.size();
+            for(int i = 0; i < size; i++) {
                 // 从左向右打印
                 TreeNode node = deque.removeFirst();
                 tmp.add(node.val);
@@ -70,7 +71,8 @@ class Solution {
             if(deque.isEmpty()) break; // 若为空则提前跳出
             // 打印偶数层
             tmp = new ArrayList<>();
-            for(int i = deque.size(); i > 0; i--) {
+            size = deque.size();
+            for(int i = 0; i < size; i++) {
                 // 从右向左打印
                 TreeNode node = deque.removeLast();
                 tmp.add(node.val);
