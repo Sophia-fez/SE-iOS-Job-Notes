@@ -24,7 +24,7 @@ IOS相关/其他：MVC/MVVM、GET和POST、Socket通信原理、JSON数据传输
 
 ![img](https://img-blog.csdnimg.cn/20190802001835308.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1lhbnNreTU4Njg1,size_16,color_FFFFFF,t_70)
 
-#### ARP协议，ARP在网络层
+#### ARP协议
 
 每个主机都有一个 ARP 高速缓存，里面有本局域网上的各主机和路由器的 **IP 地址到 MAC 地址的映射表**。
 
@@ -124,21 +124,21 @@ TCP 主要通过四个算法来进行拥塞控制：**慢开始、拥塞避免�
 
 1. **慢开始与拥塞避免**
 
-   发送的最初执行慢开始，令 **cwnd = 1**，发送方只能发送 1 个报文段；当收到确认后，将 cwnd 加倍，因此之后发送方能够发送的报文段数量为：2、4、8 ...
+   发送的最初执行**慢开始**，令 `cwnd = 1`，发送方只能发送 1 个报文段；当收到确认后，将 **cwnd 指数增大**，因此之后发送方能够发送的报文段数量为：2、4、8 ...
 
-   注意到慢开始每个轮次都将 cwnd 加倍，这样会让 cwnd 增长速度非常快，从而使得发送方发送的速度增长速度过快，网络拥塞的可能性也就更高。设置一个慢开始门限 ssthresh，**当 cwnd >= ssthresh 时，进入拥塞避免，每个轮次只将 cwnd 加 1**。
+   注意到慢开始每个轮次都将 cwnd 加倍，这样会让 cwnd 增长速度非常快，从而使得发送方发送的速度增长速度过快，网络拥塞的可能性也就更高。设置一个慢开始门限 ssthresh，这里初始 `ssthresh = 24`，当 `cwnd >= ssthresh` 时，进入**拥塞避免**，每个轮次只将 cwnd 加 1，即 **cwnd 加法增大**（如①、③）。
 
-   如果出现了超时，则令 ssthresh = cwnd / 2，然后重新执行慢开始。
+   如果出现了**超时**（如②），则令 `cwnd = 1，ssthresh = cwnd / 2 = 12` ，然后重新执行慢开始。
 
 2. **快重传与快恢复**
 
    在接收方，要求每次接收到报文段都应该对最后一个已收到的有序报文段进行确认。例如已经接收到 M<sub>1</sub> 和 M<sub>2</sub>，此时收到 M<sub>4</sub>，应当发送对 M<sub>2</sub> 的确认。
 
-   在发送方，**如果收到三个重复确认，那么可以知道下一个报文段丢失，此时执行快重传**，立即重传下一个报文段。例如收到三个 M<sub>2</sub>，则 M<sub>3</sub> 丢失，立即重传 M<sub>3</sub>。
+   在发送方，**如果收到三个重复确认，那么可以知道下一个报文段丢失，此时执行快重传**，立即重传下一个报文段。例如收到三个 M<sub>2</sub>（如④），则 M<sub>3</sub> 丢失，立即重传 M<sub>3</sub>。
 
-   在这种情况下，只是丢失个别报文段，而不是网络拥塞。因此执行**快恢复，令 ssthresh = cwnd / 2 ，cwnd = ssthresh**（如⑤）。
+   在这种情况下，只是丢失个别报文段，而不是网络拥塞。因此执行**快恢复**，令 `ssthresh = cwnd / 2 ，cwnd = ssthresh = 8`（如⑤）。
 
-   **慢开始和快恢复的快慢指的是 cwnd 的设定值，而不是 cwnd 的增长速率。慢开始 cwnd 设定为 1，而快恢复 cwnd 设定为 ssthresh。**
+   慢开始和快恢复的快慢指的是 cwnd 的设定值，而不是 cwnd 的增长速率。慢开始 cwnd 设定为 1，而快恢复 cwnd 设定为 ssthresh。
 
    <div align="center"> <img src="https://cs-notes-1256109796.cos.ap-guangzhou.myqcloud.com/f61b5419-c94a-4df1-8d4d-aed9ae8cc6d5.png" width="600"/> </div><br>
 
@@ -193,21 +193,16 @@ HTTPS 的安全基础是 **SSL**。SSL 协议位于 TCP/IP 协议与各种应用
 
 - 服务器去CA申请一个证书，**CA用私钥对服务器公钥等信息进行加密生成了证书**，然后发送给服务器。
 
-- 为了确保根证书的绝对安全性，所以有了**[证书链](https://blog.csdn.net/huzhenv5/article/details/104578198)**，所以CA不会直接颁布整数，而是通过intermediates certificates给网站颁发证书
+- 为了确保根证书的绝对安全性，所以有了**[证书链](https://blog.csdn.net/huzhenv5/article/details/104578198)**，所以CA不会直接颁布证书，而是通过intermediates certificates给网站颁发证书
 
-- 所谓证书链的验证，是想通过证书链追溯到可信赖的CA的根（ROOT）。换句话说，要验证签发用户
+- 所谓证书链的验证，是想通过证书链追溯到可信赖的CA的根（ROOT）。换句话说，要验证签发用户实体证书的CA是否是权威可信的CA，如CFCA。**证书链验证的要求是，路径中每个证书从最终实体到根证书都是有效的，并且每个证书都要正确地对应发行该证书的权威可信任性CA。**
 
-  实体证书的CA是否是权威可信的CA，如CFCA。**证书链验证的要求是，路径中每个证书从最终实体到根证书**
-
-  **都是有效的，并且每个证书都要正确地对应发行该证书的权威可信任性CA。**
 
 <img src="https://img-blog.csdnimg.cn/20200229175602107.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2h1emhlbnY1,size_16,color_FFFFFF,t_70" alt="img" style="zoom:75%;" />
 
 <img src="https://img-blog.csdnimg.cn/20200229175841401.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2h1emhlbnY1,size_16,color_FFFFFF,t_70" alt="img" style="zoom:75%;" />
 
-#### 一次访问流程（简化）
-
-[CA证书机制的形象表述](https://blog.csdn.net/tanyaobook/article/details/106806780)
+#### 客户端验证证书，[CA证书机制的形象表述](https://blog.csdn.net/tanyaobook/article/details/106806780)
 
 - 客户端 sayHello
 - 服务器返回证书
@@ -217,13 +212,17 @@ HTTPS 的安全基础是 **SSL**。SSL 协议位于 TCP/IP 协议与各种应用
 
 ![img](https://img-blog.csdnimg.cn/20200716144350814.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3JlYm9vbWp1bg==,size_16,color_FFFFFF,t_70)
 
-#### 数据传输的机密性
+#### [数据传输的机密性](https://segmentfault.com/a/1190000013438835)
 
 **用非对称加密 对称加密的密钥，然后用对称加密密钥进行之后的加密通信**
 
-对称加密：对称密码体制中只有私钥。所以得让对方知道密钥，所以要保证密钥的安全。
+**对称加密**：对称密码体制中只有私钥。所以得让对方知道密钥，所以要保证密钥的安全。
 
-非对称加密：算法强度复杂、安全性依赖于算法与密钥但是由于其算法复杂，而使得加密解密速度没有对称加密解密的速度快。非对称密钥体制有公钥和私钥，**公钥加密，私钥解密；私钥做数字签名，公钥验证。**
+**[非对称加密](https://blog.csdn.net/qq_23167527/article/details/80614454)**：算法强度复杂、安全性依赖于算法与密钥但是由于其算法复杂，而使得加密解密速度没有对称加密解密的速度快。非对称密钥体制有公钥和私钥，**①加解密：公钥加密，私钥解密；②签名：私钥加密数字摘要形成数字签名，公钥解密数字签名进行验证。**
+
+**数字摘要**：用哈希函数将要加密的明文”摘要“成一段长度固定的128比特的密文
+
+**数字签名**：用私钥对数字摘要加密形成了签名
 
 客户端和服务端在开始传输数据之前，会协商传输过程需要使用的加密算法。 客户端发送协商请求给服务端，其中包含自己支持的**非对成加密的密钥交换算法 ( 一般是RSA)，数据签名摘要算法 ( 一般是SHA或者MD5) ，加密传输数据的对称加密算法 ( 一般是DES))**，以及加密密钥的长度。 服务端接收到消息之后，选中安全性最高的算法，并将选中的算法发送给客户端，完成协商。**客户端生成随机的字符串，通过协商好的非对称加密算法，使用服务端的公钥对该字符串进行加密，发送给服务端。 服务端接收到之后，使用自己的私钥解密得到该字符串。在随后的数据传输当中，使用这个字符串作为密钥进行对称加密。**
 
@@ -319,7 +318,7 @@ HTTPS 的安全基础是 **SSL**。SSL 协议位于 TCP/IP 协议与各种应用
 
 **递归**：客户端只发一次请求，要求对方给出最终结果，**返回的结果只有两种:查询成功或查询失败**
 
-**迭代**：客户端发出一次请求，对方如果没有授权回答，它就会返回一个能解答这个查询的其它名称服务器列表，客户端会再向返回的列表中发出请求，直到找到最终负责所查域名的名称服务器，从它得到最终结果。,**返回的是最佳的查询点或者主机地址**
+**迭代**：客户端发出一次请求，对方如果没有授权回答，它就会返回一个能解答这个查询的其它名称服务器列表，客户端会再向返回的列表中发出请求，直到找到最终负责所查域名的名称服务器，从它得到最终结果，**返回的是最佳的查询点或者主机地址**
 
 **授权回答**：向dns服务器查询一个域名，刚好这个域名是本服务器负责，返回的结果就是授权回答。
 
@@ -361,7 +360,7 @@ HTTPS 的安全基础是 **SSL**。SSL 协议位于 TCP/IP 协议与各种应用
 
 ### 4.Web 页面请求过程
 
-- DNS解析：浏览器查找域名的IP地址（DNS查找过程：浏览器缓存，路由器缓存，DNS缓存）  
+- DNS解析：浏览器查找域名的IP地址（DNS查找过程：浏览器/OS缓存，路由器缓存，DNS缓存）  
 - TCP连接
 - HTTP连接：浏览器向web服务器发送一个HTTP请求（cookies会随着请求发送给服务器），服务器处理请求（请求、处理请求&它的参数、cookies、生成一个HTML相应）
 - 服务器返回一个HTML响应
@@ -383,70 +382,12 @@ HTTP：TCP建立完成后用HTTP协议访问网页
 
 
 
-[GET和POST是HTTP请求的两种基本方法，区别](https://blog.csdn.net/ever_siyan/article/details/87935455) 
+#### [GET和POST是HTTP请求的两种基本方法，区别](https://blog.csdn.net/ever_siyan/article/details/87935455) 
 
 - GET把参数包含在URL中，POST通过request body传递参数
 - GET产生一个TCP数据包；POST产生两个TCP数据包。
 - GET方式的请求，浏览器会把http header和data一并发送出去，服务器响应200（返回数据）；
 - POST方式的请求，浏览器先发送header，服务器响应100 continue，浏览器再发送data，服务器响应200 ok（返回数据）。
-
-1. **DHCP 配置主机信息**
-
-- 假设主机最开始没有 IP 地址以及其它信息，那么就需要先使用 DHCP 来获取。
-
-- 主机生成一个 DHCP 请求报文，并将这个报文放入具有目的端口 67 和源端口 68 的 UDP 报文段中。
-
-- 该报文段则被放入在一个具有广播 IP 目的地址(255.255.255.255) 和源 IP 地址（0.0.0.0）的 IP 数据报中。
-
-- 该数据报则被放置在 MAC 帧中，该帧具有目的地址 FF:<zero-width space>FF:<zero-width space>FF:<zero-width space>FF:<zero-width space>FF:FF，将广播到与交换机连接的所有设备。
-
-- 连接在交换机的 DHCP 服务器收到广播帧之后，不断地向上分解得到 IP 数据报、UDP 报文段、DHCP 请求报文，之后生成 DHCP ACK 报文，该报文包含以下信息：IP 地址、DNS 服务器的 IP 地址、默认网关路由器的 IP 地址和子网掩码。该报文被放入 UDP 报文段中，UDP 报文段有被放入 IP 数据报中，最后放入 MAC 帧中。
-
-- 该帧的目的地址是请求主机的 MAC 地址，因为交换机具有自学习能力，之前主机发送了广播帧之后就记录了 MAC 地址到其转发接口的交换表项，因此现在交换机就可以直接知道应该向哪个接口发送该帧。
-
-- 主机收到该帧后，不断分解得到 DHCP 报文。之后就配置它的 IP 地址、子网掩码和 DNS 服务器的 IP 地址，并在其 IP 转发表中安装默认网关。
-
-2. **ARP 解析 MAC 地址**
-
-- 主机通过浏览器生成一个 TCP 套接字，套接字向 HTTP 服务器发送 HTTP 请求。为了生成该套接字，主机需要知道网站的域名对应的 IP 地址。
-
-- 主机生成一个 DNS 查询报文，该报文具有 53 号端口，因为 DNS 服务器的端口号是 53。
-
-- 该 DNS 查询报文被放入目的地址为 DNS 服务器 IP 地址的 IP 数据报中。
-
-- 该 IP 数据报被放入一个以太网帧中，该帧将发送到网关路由器。
-
-- DHCP 过程只知道网关路由器的 IP 地址，为了获取网关路由器的 MAC 地址，需要使用 ARP 协议。
-
-- 主机生成一个包含目的地址为网关路由器 IP 地址的 ARP 查询报文，将该 ARP 查询报文放入一个具有广播目的地址（FF:<zero-width space>FF:<zero-width space>FF:<zero-width space>FF:<zero-width space>FF:FF）的以太网帧中，并向交换机发送该以太网帧，交换机将该帧转发给所有的连接设备，包括网关路由器。
-
-- 网关路由器接收到该帧后，不断向上分解得到 ARP 报文，发现其中的 IP 地址与其接口的 IP 地址匹配，因此就发送一个 ARP 回答报文，包含了它的 MAC 地址，发回给主机。
-
-3. **DNS 解析域名**
-
-- 知道了网关路由器的 MAC 地址之后，就可以继续 DNS 的解析过程了。
-
-- 网关路由器接收到包含 DNS 查询报文的以太网帧后，抽取出 IP 数据报，并根据转发表决定该 IP 数据报应该转发的路由器。
-
-- 因为路由器具有内部网关协议（RIP、OSPF）和外部网关协议（BGP）这两种路由选择协议，因此路由表中已经配置了网关路由器到达 DNS 服务器的路由表项。
-
-- 到达 DNS 服务器之后，DNS 服务器抽取出 DNS 查询报文，并在 DNS 数据库中查找待解析的域名。
-
-- 找到 DNS 记录之后，发送 DNS 回答报文，将该回答报文放入 UDP 报文段中，然后放入 IP 数据报中，通过路由器反向转发回网关路由器，并经过以太网交换机到达主机。
-
-4. **HTTP 请求页面**
-
-- 有了 HTTP 服务器的 IP 地址之后，主机就能够生成 TCP 套接字，该套接字将用于向 Web 服务器发送 HTTP GET 报文。
-
-- 在生成 TCP 套接字之前，必须先与 HTTP 服务器进行三次握手来建立连接。生成一个具有目的端口 80 的 TCP SYN 报文段，并向 HTTP 服务器发送该报文段。
-
-- HTTP 服务器收到该报文段之后，生成 TCP SYN ACK 报文段，发回给主机。
-
-- 连接建立之后，浏览器生成 HTTP GET 报文，并交付给 HTTP 服务器。
-
-- HTTP 服务器从 TCP 套接字读取 HTTP GET 报文，生成一个 HTTP 响应报文，将 Web 页面内容放入报文主体中，发回给主机。
-
-- 浏览器收到 HTTP 响应报文后，抽取出 Web 页面内容，之后进行渲染，显示 Web 页面。
 
 ### 5.IP地址分类清楚吗？子网是怎么划分的，什么是子网掩码？
 
@@ -608,13 +549,13 @@ HTTP：TCP建立完成后用HTTP协议访问网页
 - **死锁检测与死锁恢复：**利用抢占恢复、利用回滚恢复、通过杀死进程恢复
 
 - **死锁预防：**
-- **破坏互斥条件**，例如假脱机打印机技术允许若干个进程同时输出，唯一真正请求物理打印机的进程是打印机守护进程。
-  
-- **破坏占有和等待条件**，一种实现方式是规定所有进程在开始执行前请求所需要的全部资源。
-  
-- **破坏不可抢占条件**
-  
-- **破坏环路等待**，给资源统一编号，进程只能按编号顺序来请求资源。
+  - **破坏互斥条件**，例如假脱机打印机技术允许若干个进程同时输出，唯一真正请求物理打印机的进程是打印机守护进程。
+
+  - **破坏占有和等待条件**，一种实现方式是规定所有进程在开始执行前请求所需要的全部资源。
+
+  - **破坏不可抢占条件**
+
+  - **破坏环路等待**，给资源统一编号，进程只能按编号顺序来请求资源。
   
 - **死锁避免：**在程序运行时避免发生死锁，银行家算法
 
@@ -626,47 +567,47 @@ HTTP：TCP建立完成后用HTTP协议访问网页
 
 虚拟内存允许程序不用将地址空间中的每一页都映射到物理内存，即一个程序不需要全部调入内存就可以运行，这使得有限的内存运行大程序成为可能。
 
-### 分页
+#### 分页
 
 进程中的块称为页，内存中的块称为页框，外存中的块就叫块。分页管理系统里块是相等的长度。
 
 一个虚拟地址分成两个部分，一部分存储**页号**，一部分**页内偏移量**
 
-<img src="D:\github\SE-IOS-Notes\image\QQ截图20201026165120.png" alt="QQ截图20201026165120" style="zoom:75%;" />
+<img src="..\image\QQ截图20201026165120.png" alt="QQ截图20201026165120" style="zoom:75%;" />
 
 页表：系统为每个进程建立一张页表，页表由页表项组成，每一个页表项分为**页号**和**物理内存中的块号**两部分，物理内存中的块号与页内偏移量共同组成物理地址
 
-<img src="D:\github\SE-IOS-Notes\image\QQ截图20201026165402.png" alt="QQ截图20201026165402" style="zoom:75%;" />
+<img src="..\image\QQ截图20201026165402.png" alt="QQ截图20201026165402" style="zoom:75%;" />
 
-<img src="D:\github\SE-IOS-Notes\image\QQ截图20201026165425.png" alt="QQ截图20201026165425" style="zoom:75%;" />
+<img src="..\image\QQ截图20201026165425.png" alt="QQ截图20201026165425" style="zoom:75%;" />
 
-<img src="D:\github\SE-IOS-Notes\image\QQ截图20201026165459.png" alt="QQ截图20201026165459" style="zoom:75%;" />
+<img src="..\image\QQ截图20201026165459.png" alt="QQ截图20201026165459" style="zoom:75%;" />
 
 分页管理系统中地址空间是一维的，页表不能太大，否则内存利用率会降低
 
-### 分段
+#### 分段
 
 分段的做法是把每个表分成段，一个段构成一个独立的地址空间。**每个段的长度可以不同，并且可以动态增长。**段内地址空间要求连续，段间不要求连续。
 
-<img src="D:\github\SE-IOS-Notes\image\QQ截图20201026165530.png" alt="QQ截图20201026165530" style="zoom:75%;" />
+<img src="..\image\QQ截图20201026165530.png" alt="QQ截图20201026165530" style="zoom:75%;" />
 
-<img src="D:\github\SE-IOS-Notes\image\QQ截图20201026165737.png" alt="QQ截图20201026165737" style="zoom:75%;" />
+<img src="..\image\QQ截图20201026165737.png" alt="QQ截图20201026165737" style="zoom:75%;" />
 
-<img src="D:\github\SE-IOS-Notes\image\QQ截图20201026165741.png" alt="QQ截图20201026165741" style="zoom:75%;" />
+<img src="..\image\QQ截图20201026165741.png" alt="QQ截图20201026165741" style="zoom:75%;" />
 
-<img src="D:\github\SE-IOS-Notes\image\QQ截图20201026165639.png" alt="QQ截图20201026165639" style="zoom:75%;" />
+<img src="..\image\QQ截图20201026165639.png" alt="QQ截图20201026165639" style="zoom:75%;" />
 
-###  段页式
+####  段页式
 
 **程序的地址空间划分成多个拥有独立地址空间的段，每个段上的地址空间划分成大小相同的页。**这样既拥有分段系统的共享和保护，又拥有分页系统的虚拟内存功能。系统为每个进程建立一张段表，每个分段都有一张页表。在一个进程中，段表只有一个，但页表可能有多个。
 
-<img src="D:\github\SE-IOS-Notes\image\QQ截图20201026165827.png" alt="QQ截图20201026165827" style="zoom:75%;" />
+<img src="..\image\QQ截图20201026165827.png" alt="QQ截图20201026165827" style="zoom:75%;" />
 
-<img src="D:\github\SE-IOS-Notes\image\QQ截图20201026165822.png" alt="QQ截图20201026165822" style="zoom:75%;" />
+<img src="..\image\QQ截图20201026165822.png" alt="QQ截图20201026165822" style="zoom:75%;" />
 
-<img src="D:\github\SE-IOS-Notes\image\QQ截图20201026165923.png" alt="QQ截图20201026165923" style="zoom:75%;" />
+<img src="..\image\QQ截图20201026165923.png" alt="QQ截图20201026165923" style="zoom:75%;" />
 
-### 分页与分段的比较
+#### 分页与分段的比较
 
 - 对程序员的透明性：分页透明，分段需要程序员显式划分每个段。
 
@@ -682,7 +623,7 @@ HTTP：TCP建立完成后用HTTP协议访问网页
 
 **内存分配管理（段式、页式，段页式），虚拟内存页面置换算法：先进先出FIFO、最佳OPI、最近最久未使用LRU、最近未使用NRU**
 
-### 页面置换算法
+#### 页面置换算法
 
 在程序运行过程中，如果要访问的页面不在内存中，就发生**缺页中断**从而将该页调入内存中。此时如果内存已无空闲空间，系统必须从内存中调出一个页面到磁盘对换区中来腾出空间。
 
@@ -776,7 +717,7 @@ B树也就是B-树
    - 非叶子结点的指针：P[1], P[2], …, P[M]；其中P[1]指向关键字小于K[1]的子树，P[M]指向关键字大于K[M-1]的子树，其它P[i]指向关键字属于(K[i-1], K[i])的子树；
    - 所有叶子结点位于同一层；
 
-<img src="D:\github\SE-IOS-Notes\image\QQ截图20201027001506.png" alt="QQ截图20201027001506" style="zoom:75%;" />
+<img src="..\image\QQ截图20201027001506.png" alt="QQ截图20201027001506" style="zoom:75%;" />
 
 2. B+树
 
@@ -844,9 +785,9 @@ iOS中多数数据源视图控件（View）都有一个dataSource属性用于和
 
 delegate 代理模式（设计模式的一种），用来处理事件监听、参数传递功能。
 
-![img](https://bkimg.cdn.bcebos.com/pic/ac6eddc451da81cb26660e7e5066d01608243184?x-bce-process=image/watermark,image_d2F0ZXIvYmFpa2U4MA==,g_7,xp_5,yp_5)
+![img](../image/MVC2.png)
 
-<img src="https://upload-images.jianshu.io/upload_images/7770244-f4fc955f1488299a.png?imageMogr2/auto-orient/strip|imageView2/2/w/1127/format/webp" alt="img" style="zoom:50%;" />
+<img src="..\image\MVC.png" alt="MVC" style="zoom:50%;" />
 
 ### MVVM
 
@@ -866,7 +807,7 @@ UITableView对于数据源控件除了代理还有一个数据源属性，通过
 
 支持**自定义UITableViewCell**，cell的复用，其中红色为可视区域，蓝色为屏幕外区域
 
-<img src="https://upload-images.jianshu.io/upload_images/1322498-28c8d3a2b8b8f00f.png?imageMogr2/auto-orient/strip|imageView2/2/w/290/format/webp" alt="img" style="zoom: 75%;" /><img src="https://upload-images.jianshu.io/upload_images/1322498-e02c571c469a729d.png?imageMogr2/auto-orient/strip|imageView2/2/w/325/format/webp" alt="img" style="zoom:75%;" /><img src="https://upload-images.jianshu.io/upload_images/1322498-05fb712b0dfa16ba.png?imageMogr2/auto-orient/strip|imageView2/2/w/326/format/webp" alt="img" style="zoom:75%;" />
+<img src="..\image\cell1.png" alt="cell1" style="zoom:75%;" /><img src="..\image\cell2.png" alt="cell2" style="zoom:75%;" /><img src="..\image\cell3.png" alt="cell3" style="zoom:75%;" />
 
 - 对于在 MVC 的定义中，view 层是不引用 model 层，view 和 model 是不相往来的
 - 一般开发中，在自定义 view 中增加一个 model 的属性，外接直接传个 model 来，在 view 中 model 的 set 方法里对 view 的控件赋值的代码，例如在自定义 UITableViewCell 时用的很多，此时 view 是直接引用了 model
@@ -952,7 +893,7 @@ NSTimer 的 target 对传入的参数都是强引用（即使是 weak 对象）
 
 计时器保留其目标对象，反复执行任务导致的循环，确实要注意，另外在dealloc的时候，不要忘了调用计时器中的 invalidate方法。
 
-<img src="https://upload-images.jianshu.io/upload_images/6618656-d08f3092a97ab9e3?imageMogr2/auto-orient/strip|imageView2/2/w/1110/format/webp" alt="img" style="zoom:50%;" />
+<img src="..\image\strong weak.png" alt="strong weak" style="zoom:50%;" />
 
 ### 内存泄漏
 
@@ -964,11 +905,11 @@ Block循环引用问题：Block的拥有者在Block作用域内部又引用了�
 
 ### 常见汇编指令
 
-![clipboard](D:\github\SE-IOS-Notes\image\clipboard.png)
+![](..\image\huibianzhiling.png)
 
 ### 设计模式
 
-![img](https://upload-images.jianshu.io/upload_images/301129-2c27c621a8eb8d05.png?imageMogr2/auto-orient/strip|imageView2/2/w/912/format/webp)
+![](..\image\design.png)
 
 ## [智力题](https://blog.csdn.net/qq_40058686/article/details/104664136)
 
