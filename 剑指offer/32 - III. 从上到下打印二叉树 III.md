@@ -48,7 +48,11 @@ class Solution {
 }
 ```
 
+**时间复杂度**：O(N)。N 为二叉树的节点数量，即 BFS 需循环 N 次，占用 O(N) ；双端队列的队首和队尾的添加和删除操作的时间复杂度均为 O(1) 。
+**空间复杂度**：O(N)。最差情况下，即当树为满二叉树时，最多有 N/2 个树节点 同时 在 deque 中，使用 O(N) 大小的额外空间。
+
 ### 【解题思路2】倒序入队
+
 ```java
 class Solution {
     public List<List<Integer>> levelOrder(TreeNode root) {
@@ -86,3 +90,4 @@ class Solution {
     }
 }
 ```
+
