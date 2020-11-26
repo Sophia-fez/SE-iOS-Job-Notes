@@ -154,6 +154,18 @@ TCP 主要通过四个算法来进行拥塞控制：**慢开始、拥塞避免�
 
    500 – 内部服务器错误
 
+   [14种常见状态码](https://blog.csdn.net/banana960531/article/details/85621865)
+
+   |      | 类别                          | 原因短语                           |
+   | ---- | ----------------------------- | ---------------------------------- |
+   | 1xx  | Informational（信息性状态码） | 接受的请求正在处理                 |
+   | 2xx  | Success（成功状态码）         | 请求正常处理完毕                   |
+   | 3xx  | Redirection（重定向）         | 需要进行附加操作以完成请求         |
+   | 4xx  | Client error（客户端错误）    | 客户端请求出错，服务器无法处理请求 |
+   | 5xx  | Server Error（服务器错误）    | 服务器处理请求出错                 |
+
+   
+
 2. HTTP和HTTPS的区别，HTTPS加密过程（https是如何安全的，用到了什么加密算法，怎么获取私钥），中间URL怎么变，HTTP的长连接和短连接，HTTP头部有哪些内容，http2.0和http1.0区别,如果没有http2.0，怎么解决短连接问题
 
 #### HTTP
@@ -783,7 +795,7 @@ MVC一句话描述就是Controller负责将Model的数据用View显示出来，�
 
 iOS中多数数据源视图控件（View）都有一个dataSource属性用于和控制器（Controller）交互，而数据来源一般会以数据模型（Model）的形式进行定义，View不直接和模型交互，而是通过Controller间接读取数据。
 
-delegate 代理模式（设计模式的一种），用来处理事件监听、参数传递功能。
+**delegate 代理模式（设计模式的一种），用来处理事件监听、参数传递功能。**
 
 ![img](../image/MVC2.png)
 
