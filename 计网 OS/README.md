@@ -1,6 +1,6 @@
 # 计算机基础知识
 
-OS.md、计网.md 资料底稿自于[CyC2018](https://github.com/CyC2018)/**[CS-Notes](https://github.com/CyC2018/CS-Notes)**，牛客IOS面经整理.md 是综合各方的整理
+OS.md、计网.md 资料底稿自于[CyC2018](https://github.com/CyC2018)/**[CS-Notes](https://github.com/CyC2018/CS-Notes)** 但删改幅度非常大，牛客IOS面经整理.md 是综合各方的整理
 
 ## [计网](https://github.com/Sophia-fez/SE-iOS-Job-Notes/blob/master/计网%20OS/计网.md)资料结构说明
 
