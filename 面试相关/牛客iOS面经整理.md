@@ -1,6 +1,6 @@
 [TOC]
 
-# 牛客IOS面经整理
+# 牛客iOS面经整理
 
 **要点：**
 
@@ -12,7 +12,7 @@ OS：进程、线程、锁
 
 C++/JAVA语言基础：hashmap原理
 
-IOS相关/其他：MVC/MVVM、GET和POST、Socket通信原理、JSON数据传输、有web开发经验的优先
+iOS相关/其他：MVC/MVVM、GET和POST、Socket通信原理、JSON数据传输、有web开发经验的优先
 
 ## 计网
 
@@ -333,7 +333,7 @@ HTTP：TCP建立完成后用HTTP协议访问网页
 
 ## OS
 
-###  [进程通信](https://github.com/Sophia-fez/SE-IOS-Notes/blob/master/%E8%AE%A1%E7%BD%91%20OS/%E8%AE%A1%E7%BD%91.md)，进程间传输信息：管道、FIFO、消息队列、信号量、共享存储、套接字（重点）
+###  [进程通信](https://github.com/Sophia-fez/SE-iOS-Notes/blob/master/%E8%AE%A1%E7%BD%91%20OS/%E8%AE%A1%E7%BD%91.md)，进程间传输信息：管道、FIFO、消息队列、信号量、共享存储、套接字（重点）
 
    - 管道：速度慢，容量有限，只有父子进程能通讯    
 
